@@ -58,7 +58,9 @@ public class ServiceApplication {
 
         var pdfReader = new PagePdfDocumentReader(pdfResource, config);
         var textSplitter = new TokenTextSplitter();
-        vectorStore.accept(textSplitter.apply(pdfReader.get()));
+        var document = pdfReader.get();
+        var data = textSplitter.apply(document);
+        vectorStore.accept(data);
 
     }
 
@@ -67,7 +69,7 @@ public class ServiceApplication {
             Chatbot chatbot,
             VectorStore vectorStore,
             JdbcTemplate jdbcTemplate,
-            @Value("file://${HOME}/Desktop/pdfs/medicaid-wa-faqs.pdf") Resource resource) {
+            @Value("file:C:/Users/Ansis/IdeaProjects/llm-rag-with-spring-ai/service/medicaid-wa-faqs.pdf") Resource resource) {
         return args -> {
             init(vectorStore, jdbcTemplate, resource);
             var response = chatbot.chat("what should I know about the transition to consumer direct care network washington?");
